@@ -1,3 +1,7 @@
+/*##############################
+  Data:
+##############################*/
+
 var user = {
   name: "Daniel Alegria",
   location: "San Francisco",
@@ -56,5 +60,9 @@ var user = {
     }
   ]
 };
+
+/*##############################
+  Exports:
+##############################*/
 
 module.exports = user;

@@ -1,16 +1,32 @@
+/*##############################
+  Require Database:
+##############################*/
+
 var user = require('../user.js');
+var skillz = require('../skillz.js');
+var secrets = require('../secrets.js');
+
+/*##############################
+  Exports:
+##############################*/
 
 module.exports = {
 
-  getName: function (req, res, next){
+  /*##############################
+    Read-Only Functions:
+  ##############################*/
+
+  //GET Functions:
+
+  getName(req, res, next){
     res.status(200).json({"name": user.name});
   },
 
-  getLocation: function(req, res, next){
+  getLocation(req, res, next){
     res.status(200).json({"location": user.location});
   },
 
-  getOccupations: function(req, res, next){
+  getOccupations(req, res, next){
     var listOccupations = res.status(200).json({
       "occupations": user.occupations
     });
@@ -27,51 +43,124 @@ module.exports = {
     }
   },
 
-  getLatestOccupation: function(req, res, next){
+  getLatestOccupation(req, res, next){
     res.status(200).json({"latestOccupation": user.occupations[user.occupations.length-1]});
   },
 
-  getHobbies: function(req, res, next){
+  getHobbies(req, res, next){
     res.status(200).json({"hobbies": user.hobbies});
   },
 
-  getHobbiesType: function(req, res, next){
+  getHobbiesType(req, res, next){
     var matchingHobby = user.hobbies.filter(
       val => val.type === req.params.type
     )
     res.status(200).json({"type": matchingHobby});
   },
 
-  getFamily: function(req, res, next){
+  getFamily(req, res, next){
     res.status(200).json({"family": user.family});
   },
 
-  getGender: function(req, res, next){
+  getGender(req, res, next){
     var matchingGender = user.family.filter(
       val => val.gender === req.params.gender
     )
     res.status(200).json({"gender": matchingGender});
   },
 
-  getRestaurants: function(req, res, next){
-    if (req.query.rating){
-      res.status(200).json(
-        {"rating":
-        user.restaurants.filter(
-        val => val.rating > req.query.rating
-        )
-      })
-    }
-    res.status(200).json({"restaurants": user.restaurants});
+  getRestaurants(req, res, next){
+    // if (req.query.rating){
+    //   res.status(200).json(
+    //     {"rating":
+    //     user.restaurants.filter(
+    //     val => val.rating > req.query.rating
+    //     )
+    //   })
+    // }
+    // res.status(200).json({"restaurants": user.restaurants});
+    req.query.rating ?
+    (res.status(200).json(
+      {"rating":
+      user.restaurants.filter
+      (val => val.rating > req.query.rating)}
+      )) : (res.status(200).json({"restaurants": user.restaurants}))
+
   },
 
-  getRestaurantsByName: function(req, res, next){
+  getRestaurantsByName(req, res, next){
     var byName = user.restaurants.filter(
       val => val.name === req.params.name
     )
     res.status(200).json({"name": byName})
-  }
+  },
 
-  
+  getSkillz(req, res, next){
+    req.query.experience ?
+    (res.status(200).json(
+    {"experience": skillz.filter
+    (val => val.experience === req.query.experience)}
+    )) : (res.status(200).json(skillz));
+  },
 
+  getSecrets(req, res, next){
+    res.status(200).json(secrets);
+  },
+
+  /*##############################
+    Writeable Functions:
+  ##############################*/
+
+  //PUT Functions:
+
+  putName(req, res, next){
+    user.name = req.body.name;
+    res.status(200).send("ok");
+  },
+
+  //Change name with params:
+  // changeName(req, res, next){
+  //   console.log(req.params);
+  //   user.name = req.params;
+  //   res.status(501).send("ok")
+  // }
+
+  putLocation(req, res, next){
+    user.location = req.body.location;
+    res.status(200).send("ok");
+  },
+
+  //POST Functions:
+
+  postHobbies(req, res, next){
+    user.hobbies.push(req.body);
+    res.status(200).send("ok");
+  },
+
+  postOccupations(req, res, next){
+   user.occupations.push(req.body);
+   res.status(200).send("ok");
+  },
+
+  postFamily(req, res, next){
+   user.family.push(req.body);
+   res.status(200).send("ok");
+  },
+
+  postRestaurants(req, res, next){
+   user.restaurants.push(req.body);
+   res.status(200).send("ok");
+ },
+
+  postSkillz(req, res, next){
+   skillz.push(req.body);
+   res.status(200).send("ok");
+ }
+
+ // addSomething(req, res, next){
+ //   console.log(req.query);
+ //   user.hobbies.push({name: req.query.name, type: req.query.type});
+ //   res.status(200).send("ok");
+ // }
+ 
 }

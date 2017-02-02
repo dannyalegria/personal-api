@@ -254,6 +254,7 @@ This endpoint is going to be a bit more complicated than those you've made previ
 * Create the endpoint
 
 ###### `GET /skillz`
+
 - Retrieve the list of skills
 
 - Also, allow an 'experience' query parameter so that someone can retrieve a list of skills that match a certain level of experience, like so:
@@ -271,7 +272,7 @@ app.post('/skillz', middleware.generateId, mainCtrl.postSkillz);
 
 If this request is timing out, make sure you didn't forget to include the `next()` call inside your middleware!
 
-#### Step 7: Secrets
+#### Step 7: Secrets ??? WTF CANT GET THIS!!!
 * Create one more file called `secrets.js` that will export an array of secrets stored as strings. Make sure to require this in the necessary controller file.
 * Let's create one more endpoint, somewhere we want to hide our deep dark secrets. We don't want just anyone accessing our secrets, so lets have a username and PIN parameter to make sure that *you* are _**you!**_
 
